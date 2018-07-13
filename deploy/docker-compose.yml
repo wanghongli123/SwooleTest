@@ -1,0 +1,39 @@
+version: '2.1'
+
+services:
+    php:
+        build:
+            context: php
+            args:
+                - INI_FILE=php.ini
+        expose:
+            - "5200"
+        volumes:
+            - "../laravelapp:/var/www/app"
+        networks:
+            vpcbr:
+                ipv4_address: 192.168.200.2
+
+    nginx:
+        build:
+            context: nginx
+            args:
+                - INI_FILE=nginx.conf
+        links:
+            - "php"
+        ports:
+            - "8088:80"
+        volumes:
+            - "../laravelapp:/var/www/app"
+        networks:
+            vpcbr:
+                ipv4_address: 192.168.200.5
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 192.168.200.0/24
+                  gateway: 192.168.200.1
+
