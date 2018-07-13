@@ -6,8 +6,8 @@ services:
             context: php
             args:
                 - INI_FILE=php.ini
-        expose:
-            - "5200"
+        ports:
+            - "5200:5200"
         volumes:
             - "../laravelapp:/var/www/app"
         networks:
